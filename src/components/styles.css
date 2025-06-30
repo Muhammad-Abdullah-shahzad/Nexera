@@ -1,0 +1,8 @@
+@media screen and (max-width: 450px) {
+  .technologies-grid {
+    gap: 1rem !important;
+  }
+  .tech-card {
+    max-width: 125px !important;
+  }
+}
