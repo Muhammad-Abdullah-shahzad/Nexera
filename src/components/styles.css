@@ -5,4 +5,7 @@
   .tech-card {
     max-width: 125px !important;
   }
+  .hero-title{
+    margin-top: 100px !important;
+  }
 }

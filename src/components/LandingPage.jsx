@@ -1,7 +1,10 @@
-import React, { useState } from 'react';
-import "./styles.css"
+import React, { useState, useEffect, useRef } from 'react';
+import "./styles.css" 
 // Main App Component
 function App() {
+  // isLightMode state and IntersectionObserver are removed from App,
+  // as theme switching is now localized to ClientsTestimonialSection.
+
   return (
     <div className="app-container">
       {/* Global Styles */}
@@ -25,7 +28,7 @@ function App() {
           --color-yellow-400: #FBBF24;
         }
 
-        /* Base Styles */
+        /* Base Styles - These remain the default dark theme */
         body {
           margin: 0;
           font-family: 'Inter', sans-serif;
@@ -35,9 +38,10 @@ function App() {
 
         .app-container {
           min-height: 100vh;
-          background-color: var(--color-black);
-          color: var(--color-white);
+          background-color: var(--color-black); /* Always dark background for the app */
+          color: var(--color-white); /* Always white text for the app */
           font-family: 'Inter', sans-serif;
+          /* No global theme transition here, as only specific section changes */
         }
 
         .container {
@@ -216,26 +220,53 @@ function App() {
           position: absolute;
           border-radius: 0.5rem;
           box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
-          display: none; /* Hidden on small screens */
-          width: 150px; /* Fixed width for images */
-          height: 100px; /* Fixed height for images */
+          object-fit: cover; /* Ensure images cover their area */
+          animation: float 3s ease-in-out infinite; /* Keep float animation */
         }
-        @media (min-width: 768px) { /* md breakpoint */
+
+        /* Mobile specific adjustments for hero images */
+        @media (max-width: 767px) { /* Apply to screens smaller than md breakpoint */
           .hero-image {
-            display: block;
+            display: block; /* Ensure images are visible on mobile */
+            width: 25vw; /* Responsive width for mobile */
+            height: auto; /* Maintain aspect ratio */
+            max-width: 120px; /* Max width to prevent too large images on slightly bigger mobiles */
+            max-height: 80px; /* Max height */
+            z-index: 0; /* Ensure images are behind text */
+          }
+          .hero-image-1 { top: 10%; left: 5%; animation-duration: 3s; }
+          .hero-image-2 { top: 30%; right: 5%; animation-duration: 3.5s; } /* Adjusted to right */
+          .hero-image-3 { top: 60%; left: 5%; animation-duration: 2.8s; }
+          .hero-image-4 { top: 80%; right: 5%; animation-duration: 3.2s; } /* Adjusted to right */
+          /* .hero-image-5 is removed */
+
+          /* Adjust padding for hero section on mobile to prevent text overlap */
+          .hero-section {
+            padding-top: 8rem; /* More space at the top for images */
+            padding-bottom: 8rem; /* More space at the bottom for images */
+          }
+          .hero-title, .hero-description {
+            position: relative; /* Ensure text stays on top */
+            z-index: 1; /* Ensure text is above images */
           }
         }
-        .hero-image-1 { top: 25%; left: 1rem; animation: float 3s ease-in-out infinite; }
-        @media (min-width: 640px) { .hero-image-1 { left: 2.5rem; } }
-        @media (min-width: 1024px) { .hero-image-1 { left: 5rem; } }
 
-        .hero-image-2 { top: 50%; left: 25%; transform: translateX(-50%); animation: float 3.5s ease-in-out infinite; }
-        .hero-image-3 { top: 25%; right: 1rem; animation: float 2.8s ease-in-out infinite; }
-        @media (min-width: 640px) { .hero-image-3 { right: 2.5rem; } }
-        @media (min-width: 1024px) { .hero-image-3 { right: 5rem; } }
-
-        .hero-image-4 { top: 50%; right: 25%; transform: translateX(50%); animation: float 3.2s ease-in-out infinite; }
-        .hero-image-5 { bottom: 25%; left: 25%; transform: translateX(-50%); animation: float 3.7s ease-in-out infinite; }
+        @media (min-width: 768px) { /* md breakpoint and up */
+          .hero-image {
+            display: block; /* Ensure images are visible on desktop */
+            width: 150px; /* Fixed width for desktop */
+            height: 100px; /* Fixed height for desktop */
+          }
+          .hero-image-1 { top: 25%; left: 2.5rem; animation-duration: 3s; }
+          .hero-image-2 { top: 50%; left: 25%; transform: translateX(-50%); animation-duration: 3.5s; }
+          .hero-image-3 { top: 25%; right: 2.5rem; animation-duration: 2.8s; }
+          .hero-image-4 { top: 50%; right: 25%; transform: translateX(50%); animation-duration: 3.2s; }
+          .hero-image-5 { bottom: 25%; left: 25%; transform: translateX(-50%); animation-duration: 3.7s; }
+        }
+        @media (min-width: 1024px) { /* lg breakpoint and up */
+          .hero-image-1 { left: 5rem; }
+          .hero-image-3 { right: 5rem; }
+        }
 
         @keyframes float {
           0% { transform: translateY(0px); }
@@ -386,6 +417,35 @@ function App() {
           font-size: 0.875rem;
         }
 
+        /* Styles for Clients Testimonial Section in Light Mode */
+        .clients-section-light-mode {
+          background-color: var(--color-gray-200); /* Light background for the section itself */
+          color: var(--color-black); /* Dark text for the section */
+          transition: background-color 0.5s ease-in-out, color 0.5s ease-in-out;
+        }
+
+        .clients-section-light-mode .section-header .section-title,
+        .clients-section-light-mode .section-header .section-description {
+          color: var(--color-black); /* Ensure titles and descriptions are dark */
+        }
+        .clients-section-light-mode .section-header .service-color-pink {
+          color: var(--color-pink-500); /* Keep accent color */
+        }
+
+        .clients-section-light-mode .testimonial-card {
+          background-color: var(--color-white); /* White background for cards */
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Lighter shadow */
+        }
+
+        .clients-section-light-mode .testimonial-quote,
+        .clients-section-light-mode .testimonial-author-name {
+          color: var(--color-gray-900); /* Darker text for quotes and names */
+        }
+
+        .clients-section-light-mode .testimonial-author-company {
+          color: var(--color-gray-700); /* Darker gray for company name */
+        }
+
         /* Team Section Styles */
         .team-grid {
           display: grid;
@@ -533,6 +593,74 @@ function App() {
         }
 
 
+        /* New Animated Cards Section Styles */
+        .animated-cards-section {
+          padding: 4rem 0;
+          overflow: hidden; /* Crucial for the animation */
+          background-color: var(--color-black); /* Ensure consistent background */
+          /* Apply mask for fade effect only on the left */
+          mask-image: linear-gradient(to right, transparent, black 20%);
+          mask-size: 100% 100%;
+          -webkit-mask-image: linear-gradient(to right, transparent, black 20%); /* For Webkit browsers */
+          -webkit-mask-size: 100% 100%;
+        }
+
+        .animated-cards-container {
+          display: flex; /* Ensure flex display for horizontal layout */
+          flex-wrap: nowrap; /* Prevent wrapping */
+          animation: scrollCardsLeft 8s linear infinite; /* Adjusted speed to 8s */
+          will-change: transform; /* Optimize for animation */
+          /* width will be set dynamically by JavaScript */
+        }
+
+        @keyframes scrollCardsLeft {
+          0% {
+            transform: translateX(0%);
+          }
+          100% {
+            transform: translateX(-50%); /* Scroll half the content for seamless loop */
+          }
+        }
+
+        .animated-card {
+          flex-shrink: 0; /* Prevent cards from shrinking */
+          display: flex;
+          align-items: center;
+          gap: 0.75rem;
+          background-color: var(--color-gray-800);
+          color: var(--color-white);
+          padding: 0.75rem 1.5rem;
+          border-radius: 9999px; /* Pill shape */
+          border: 1px solid var(--color-gray-700);
+          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+          font-weight: 500;
+          margin-right: 1.5rem; /* Spacing between cards */
+          white-space: nowrap; /* Prevent text wrapping inside cards */
+        }
+
+        .animated-card-icon {
+          width: 1.25rem;
+          height: 1.25rem;
+          color: var(--color-green-500); /* Checkmark color */
+        }
+
+        /* Responsive adjustments for animated cards */
+        @media (max-width: 768px) {
+          .animated-cards-container {
+            animation: scrollCardsLeft 10s linear infinite; /* Adjust speed for mobile if needed */
+            flex-wrap: nowrap; /* Keep cards on a single line */
+            justify-content: flex-start; /* Align to start for scrolling */
+          }
+          .animated-cards-section {
+            /* Keep mask active for fade effect on mobile */
+          }
+          .animated-card {
+            margin-bottom: 0; /* Remove vertical spacing if it was added for wrapping */
+            margin-right: 1rem; /* Adjust horizontal spacing for mobile */
+          }
+        }
+
+
         /* Contact Us Section Styles */
         .contact-form-container {
           max-width: 46rem; /* Adjusted max-width slightly to match image */
@@ -601,6 +729,55 @@ function App() {
           background-color: var(--color-green-400);
         }
 
+        /* Call To Action Section Styles */
+        .cta-section {
+          background-color: var(--color-gray-800); /* Darker background for contrast */
+          text-align: center;
+          padding: 4rem 1rem;
+          border-radius: 1rem;
+          margin-top: 4rem;
+          margin-bottom: 4rem;
+          box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .cta-title {
+          font-size: 2.5rem;
+          font-weight: 800;
+          color: var(--color-white);
+          margin-bottom: 1rem;
+        }
+        @media (min-width: 640px) {
+          .cta-title {
+            font-size: 3rem;
+          }
+        }
+
+        .cta-description {
+          color: var(--color-gray-300);
+          font-size: 1.125rem;
+          max-width: 48rem;
+          margin: 0 auto 2rem auto;
+        }
+
+        .cta-button {
+          background-color: var(--color-pink-500);
+          color: var(--color-white);
+          font-weight: bold;
+          padding: 0.75rem 2.5rem;
+          border-radius: 9999px;
+          border: none;
+          cursor: pointer;
+          transition: background-color 0.3s ease, transform 0.2s ease;
+          outline: none;
+          box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .cta-button:hover {
+          background-color: var(--color-pink-400); /* Slightly lighter pink on hover */
+          transform: translateY(-2px);
+        }
+
+
         /* Footer Styles */
         .footer {
           background-color: var(--color-gray-900);
@@ -633,6 +810,9 @@ function App() {
         {/* Hero Section */}
         <HeroSection />
 
+        {/* New Animated Cards Section */}
+        <AnimatedCardsSection />
+
         {/* Services Section */}
         <ServicesSection />
 
@@ -647,6 +827,9 @@ function App() {
 
         {/* Contact Us Section */}
         <ContactUsSection />
+        
+        {/* Call To Action Section - NEW */}
+        {/* <CallToActionSection /> */}
       </main>
 
       {/* Footer */}
@@ -715,20 +898,10 @@ const HeroSection = () => {
 
       {/* Placeholder images - In a real app, these would be optimized and probably loaded from a CDN */}
       <div className="hero-image hero-image-1">
-        <img src="https://placehold.co/150x100/333/FFF?text=Image+1" alt="Digital Experience 1" />
+        <img src="https://static.vecteezy.com/system/resources/thumbnails/021/666/129/small/3d-monitor-with-user-interface-elements-for-web-design-software-creator-web-development-application-design-coding-and-programming-on-laptop-concept-3d-rendering-png.png" alt="Digital Experience 1" />
       </div>
-      <div className="hero-image hero-image-2">
-        <img src="https://placehold.co/150x100/333/FFF?text=Image+2" alt="Digital Experience 2" />
-      </div>
-      <div className="hero-image hero-image-3">
-        <img src="https://placehold.co/150x100/333/FFF?text=Image+3" alt="Digital Experience 3" />
-      </div>
-      <div className="hero-image hero-image-4">
-        <img src="https://placehold.co/150x100/333/FFF?text=Image+4" alt="Digital Experience 4" />
-      </div>
-       <div className="hero-image hero-image-5">
-        <img src="https://placehold.co/150x100/333/FFF?text=Image+5" alt="Digital Experience 5" />
-      </div>
+    
+      {/* Removed hero-image-5 */}
     </section>
   );
 };
@@ -825,7 +998,39 @@ const TestimonialCard = ({ rating, quote, author, company, logoUrl }) => {
 };
 
 // Clients Testimonial Section Component
+// This component now manages its own theme based on visibility
 const ClientsTestimonialSection = () => {
+  const [isLightMode, setIsLightMode] = useState(false);
+  const sectionRef = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsLightMode(true); // Switch to light mode for this section
+        } else {
+          setIsLightMode(false); // Revert to dark mode for this section
+        }
+      },
+      {
+        root: null, // Use the viewport as the root
+        rootMargin: '0px', // No margin
+        threshold: 0.5, // Trigger when 50% of the section is visible
+      }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    // Cleanup function
+    return () => {
+      if (sectionRef.current) {
+        observer.unobserve(sectionRef.current);
+      }
+    };
+  }, []); // Empty dependency array means this effect runs once on mount and cleans up on unmount
+
   const testimonials = [
     {
       rating: 5,
@@ -858,7 +1063,7 @@ const ClientsTestimonialSection = () => {
   ];
 
   return (
-    <section className="section-padding">
+    <section className={`section-padding ${isLightMode ? 'clients-section-light-mode' : ''}`} ref={sectionRef}>
        <div className="section-header">
         <h2 className="section-title">
           SEE WHY OUR CLIENTS <span className="service-color-pink">TRUST</span> US
@@ -962,7 +1167,7 @@ const TechnologiesSection = () => {
     { name: "Node.js", icon: "https://cdn-icons-png.flaticon.com/512/5968/5968322.png", category: "Web Backend" },
     { name: "Python", icon: "https://cdn-icons-png.flaticon.com/256/5968/5968350.png", category: "Web Backend" },
     { name: "express", icon: "https://images.credly.com/images/1c2c86e1-16ce-4e4d-a425-d1ac96bb026d/express.png", category: "Web Backend" },
-    { name: "Ruby", icon: "https://cdn-icons-png.flaticon.com/512/919/919842.png", category: "Web Backend" },
+    { name: "Ruby", icon: "https://cdn-icons-png.flatication.com/512/919/919842.png", category: "Web Backend" },
     // Databases
     { name: "MongoDB", icon: "https://images.icon-icons.com/2699/PNG/512/mongodb_logo_icon_170943.png", category: "Databases" },
     { name: "SQL Server", icon: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ4deYjMvHoD5zMEuAF_kgds8uoslVJ3pFP0w&s", category: "Databases" },
@@ -1101,6 +1306,108 @@ const ContactUsSection = () => {
             </button>
           </div>
         </form>
+      </div>
+    </section>
+  );
+};
+
+// New Call To Action Section Component
+const CallToActionSection = () => {
+  return (
+    <section className="cta-section">
+      <h2 className="cta-title">
+        Ready to Start Your Next Project?
+      </h2>
+      <p className="cta-description">
+        Let's work together to bring your vision to life. Contact us today for a free consultation and quote.
+      </p>
+      <button className="cta-button">
+        GET A FREE QUOTE
+      </button>
+    </section>
+  );
+};
+
+// New Animated Cards Section Component
+const AnimatedCardsSection = () => {
+  const cards = [
+    { name: "Software Solution", icon: (
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="animated-card-icon"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
+      ) },
+    { name: "Software Development", icon: (
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="animated-card-icon"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+      ) },
+    { name: "Mobile Development", icon: (
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="animated-card-icon"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+      ) },
+    { name: "Desktop Application Development", icon: (
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="animated-card-icon"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+      ) },
+    { name: "Web Development", icon: (
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="animated-card-icon"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+      ) },
+  ];
+
+  // Duplicate the cards array to ensure a seamless loop
+  const duplicatedCards = [...cards, ...cards];
+  const containerRef = useRef(null);
+  const firstHalfRef = useRef(null); // Ref to measure the first set of cards
+
+  useEffect(() => {
+    const updateContainerWidth = () => {
+      if (firstHalfRef.current) {
+        // Calculate the total width of the first set of cards including margins
+        let totalWidth = 0;
+        // Assuming each card has a margin-right of 1.5rem (24px) as per .animated-card CSS
+        const cardMarginRight = 24; // Convert 1.5rem to px for consistent calculation
+        // Get all direct children (the cards)
+        const children = Array.from(firstHalfRef.current.children);
+        // Sum the offsetWidth of the first half of the children
+        for (let i = 0; i < cards.length; i++) { // cards.length is the original count
+          if (children[i]) {
+            totalWidth += children[i].offsetWidth + cardMarginRight;
+          }
+        }
+        // Set the container's width to twice the total width of the original set of cards
+        // This ensures that when the animation translates by -50%, it perfectly aligns
+        // with the start of the duplicated content, creating a seamless loop.
+        if (containerRef.current) {
+          containerRef.current.style.width = `${totalWidth * 2}px`;
+        }
+      }
+    };
+
+    // Initial width calculation
+    updateContainerWidth();
+
+    // Recalculate width on window resize to maintain responsiveness
+    window.addEventListener('resize', updateContainerWidth);
+
+    // Cleanup event listener on component unmount
+    return () => {
+      window.removeEventListener('resize', updateContainerWidth);
+    };
+  }, [cards]); // Re-run if cards array changes (though it's static here)
+
+  return (
+    <section className="animated-cards-section">
+      <div className="animated-cards-container" ref={containerRef}>
+        <div style={{ display: 'flex', flexShrink: 0 }} ref={firstHalfRef}>
+          {/* Render the original set of cards inside firstHalfRef for measurement */}
+          {cards.map((card, index) => (
+            <div key={`original-${index}`} className="animated-card">
+              {card.icon}
+              <span>{card.name}</span>
+            </div>
+          ))}
+        </div>
+        {/* Render the duplicated set of cards outside firstHalfRef */}
+        {cards.map((card, index) => (
+          <div key={`duplicate-${index}`} className="animated-card">
+            {card.icon}
+            <span>{card.name}</span>
+          </div>
+        ))}
       </div>
     </section>
   );
