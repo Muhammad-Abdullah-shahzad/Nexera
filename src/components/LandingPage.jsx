@@ -14,7 +14,7 @@ function App() {
         :root {
           --color-black: #000;
           --color-white: #fff;
-          --color-pink-500: #EC4899;
+          --color-pink-500: #EF4444; /* Red */
           --color-green-500: #10B981;
           --color-green-400: #34D399;
           --color-blue-400: #60A5FA;
@@ -55,18 +55,23 @@ function App() {
         /* Navbar Styles */
         .navbar {
           background-color: var(--color-black);
-          padding: 1rem 1rem;
+          padding: 1rem 0; /* Remove horizontal padding for edge alignment */
           box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
         .navbar-content {
           display: flex;
           justify-content: space-between;
           align-items: center;
+          width: 100%;
+          box-sizing: border-box;
+          margin: 0;
+          padding: 0 1.5rem; /* Small side padding for breathing room */
         }
         .navbar-logo {
           font-size: 1.5rem;
           font-weight: bold;
           color: var(--color-white);
+          margin-left: 0.5rem; /* Small left margin */
         }
         .navbar-logo-pink { /* Specific class for the pink part of the logo */
           color: var(--color-pink-500);
@@ -126,7 +131,6 @@ function App() {
           background-color: var(--color-gray-600);
         }
         .navbar-button-talk {
-          background-color: var(--color-green-500);
           color: var(--color-black);
           font-weight: bold;
           padding: 0.5rem 1.5rem;
@@ -136,7 +140,7 @@ function App() {
           transition: background-color 0.3s ease;
         }
         .navbar-button-talk:hover {
-          background-color: var(--color-green-400);
+          background-color: #EF4444;
         }
         .mobile-menu-button-wrapper { /* Wrapper to help with centering on smaller screens */
           display: flex;
@@ -180,10 +184,21 @@ function App() {
           }
         }
         .hero-title {
-          font-size: 2.25rem;
+          font-size: 120px !important;
+          letter-spacing: 0.01em;
+          font-family: 'Bebas Neue', sans-serif;
           font-weight: 800;
-          line-height: 1.2;
+          line-height: 0.8;
+          margin-top: 2.5rem;
           margin-bottom: 1.5rem;
+        }
+        .hero-title-text {
+          background-color: #2e2e2e;  
+          color: white;  
+          font-style: italic;
+          padding: 0em 0.3em;
+          border-radius: 1rem;
+          display: inline-block;
         }
         @media (min-width: 640px) { /* sm breakpoint */
           .hero-title {
@@ -204,6 +219,7 @@ function App() {
         }
         .hero-description {
           font-size: 1.125rem;
+          line-height: 1.7rem;
           color: var(--color-gray-400);
           max-width: 48rem;
           margin: 0 auto 2.5rem auto;
@@ -249,6 +265,7 @@ function App() {
             position: relative; /* Ensure text stays on top */
             z-index: 1; /* Ensure text is above images */
           }
+
         }
 
         @media (min-width: 768px) { /* md breakpoint and up */
@@ -257,7 +274,7 @@ function App() {
             width: 150px; /* Fixed width for desktop */
             height: 100px; /* Fixed height for desktop */
           }
-          .hero-image-1 { top: 25%; left: 2.5rem; animation-duration: 3s; }
+          .hero-image-1 { top: 20%; left: 2.5rem; animation-duration: 3s; }
           .hero-image-2 { top: 50%; left: 25%; transform: translateX(-50%); animation-duration: 3.5s; }
           .hero-image-3 { top: 25%; right: 2.5rem; animation-duration: 2.8s; }
           .hero-image-4 { top: 50%; right: 25%; transform: translateX(50%); animation-duration: 3.2s; }
@@ -284,9 +301,10 @@ function App() {
           margin-bottom: 3rem;
         }
         .section-title {
-          font-size: 2.25rem;
+          font-family: 'Bebas Neue', sans-serif; 
+          font-size: 80px !important;
           font-weight: 800;
-          margin-bottom: 1rem;
+          margin-bottom: 0;
         }
         @media (min-width: 640px) {
           .section-title {
@@ -773,7 +791,7 @@ function App() {
         }
 
         .cta-button:hover {
-          background-color: var(--color-pink-400); /* Slightly lighter pink on hover */
+          background-color: #f87171; /* Slightly lighter red on hover */
           transform: translateY(-2px);
         }
 
@@ -842,7 +860,7 @@ function App() {
 const Navbar = () => {
   return (
     <nav className="navbar">
-      <div className="container navbar-content">
+      <div className="navbar-content">
         {/* Logo - Updated to NEXERA */}
         <div className="navbar-logo">
           <span className="navbar-logo-white">NEXERA</span>
@@ -886,20 +904,20 @@ const HeroSection = () => {
   return (
     <section className="hero-section">
       <h1 className="hero-title">
-      YOU  IMAGINE <br />
-        <span className="hero-title-pink"> WE BUILD </span>
+      Exceptional<br />
+        <span className="hero-title-pink">Digital</span>
         <span className="hero-title-emoji"></span> <br />
-       FOR YOU
+       Experiences
       </h1>
       <p className="hero-description">
-        Driving growth for leading brands and organizations through <br className="hidden-sm-inline" />
-        high-performing software solutions and results-driven digital marketing.
+        Driving growth for leading brandshrough <br className="hidden-sm-inline" />
+        high-performing <span className="hero-title-text">software solutions.</span> 
       </p>
 
       {/* Placeholder images - In a real app, these would be optimized and probably loaded from a CDN */}
-      <div className="hero-image hero-image-1">
+      {/* <div className="hero-image hero-image-1">
         <img src="https://static.vecteezy.com/system/resources/thumbnails/021/666/129/small/3d-monitor-with-user-interface-elements-for-web-design-software-creator-web-development-application-design-coding-and-programming-on-laptop-concept-3d-rendering-png.png" alt="Digital Experience 1" />
-      </div>
+      </div> */}
     
       {/* Removed hero-image-5 */}
     </section>
@@ -952,9 +970,9 @@ const ServicesSection = () => {
         <h2 className="section-title">
           SERVICES WE <span className="service-color-pink">OFFER</span>
         </h2>
-        <p className="section-description">
-          We believe in getting the details right, keeping our promises, and always going the extra mile. It's how we work and why our clients trust us.
-        </p>
+        {/* <p className="section-description">
+          We help you attract, engage, and convert customers <br /> with data-driven marketing that delivers results
+        </p> */}
       </div>
 
       <div className="services-grid">
