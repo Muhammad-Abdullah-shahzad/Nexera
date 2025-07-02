@@ -34,6 +34,7 @@ function App() {
           font-family: 'Inter', sans-serif;
           -webkit-font-smoothing: antialiased;
           -moz-osx-font-smoothing: grayscale;
+          overflow-x: hidden; /* Prevent horizontal scrolling on the body */
         }
 
         .app-container {
@@ -45,12 +46,23 @@ function App() {
         }
 
         .container {
-          max-width: 1200px;
+          max-width: 2200px; /* dont change it gemini*/
           margin-left: auto;
           margin-right: auto;
-          padding-left: 1rem;
-          padding-right: 1rem;
+          padding-left: 0px; /* dont change it gemini*/
+          padding-right: 0px; /* dont change it gemini*/
+          /* Ensure container itself doesn't cause overflow on small screens */
+          box-sizing: border-box;
+          width: 100%; /* Ensure it takes full available width */
         }
+        /* Specific adjustment for smaller screens to reduce padding and ensure content fits */
+        @media (max-width: 767px) {
+          .container {
+            padding-left: 0.5rem; /* Reduced padding for very small screens */
+            padding-right: 0.5rem;
+          }
+        }
+
 
         /* Navbar Styles */
         .navbar {
@@ -66,6 +78,12 @@ function App() {
           box-sizing: border-box;
           margin: 0;
           padding: 0 1.5rem; /* Small side padding for breathing room */
+        }
+        /* Adjust navbar content padding for smaller screens */
+        @media (max-width: 767px) {
+          .navbar-content {
+            padding: 0 0.5rem; /* Even smaller padding for mobile navbar */
+          }
         }
         .navbar-logo {
           font-size: 1.5rem;
@@ -171,7 +189,7 @@ function App() {
           position: relative;
           text-align: center;
           padding: 4rem 0;
-          overflow: hidden;
+          overflow: hidden; /* Ensure content within hero section doesn't cause overflow */
         }
         @media (min-width: 640px) { /* sm breakpoint */
           .hero-section {
@@ -184,7 +202,7 @@ function App() {
           }
         }
         .hero-title {
-          font-size: 120px !important;
+          font-size: 3rem; /* Default for smallest screens, approx 48px */
           letter-spacing: 0.01em;
           font-family: 'Bebas Neue', sans-serif;
           font-weight: 800;
@@ -202,7 +220,7 @@ function App() {
         }
         @media (min-width: 640px) { /* sm breakpoint */
           .hero-title {
-            font-size: 3rem;
+            font-size: 4rem; /* Example: Scale up for sm breakpoint */
           }
         }
         @media (min-width: 1024px) { /* lg breakpoint */
@@ -302,9 +320,13 @@ function App() {
         }
         .section-title {
           font-family: 'Bebas Neue', sans-serif; 
-          font-size: 80px !important;
           font-weight: 800;
           margin-bottom: 0;
+        }
+        @media (max-width: 767px) { /* Mobile specific font size for title */
+          .section-title {
+            font-size: 2.5rem !important; /* Smaller font size for mobile */
+          }
         }
         @media (min-width: 640px) {
           .section-title {
@@ -328,63 +350,113 @@ function App() {
           }
         }
 
-        /* Services Section Styles */
+        /* New Service Card Styles */
         .services-grid {
           display: grid;
-          grid-template-columns: 1fr;
+          grid-template-columns: 1fr; /* Default to single column on small screens */
           gap: 2rem;
+          padding: 0px 1rem;
         }
-        @media (min-width: 768px) { /* md breakpoint */
+        @media (min-width: 640px) { /* sm breakpoint */
           .services-grid {
-            grid-template-columns: repeat(3, 1fr);
-           
+            grid-template-columns: repeat(2, 1fr); /* Two columns on small screens */
           }
         }
-        .service-card {
-          background-color: var(--color-gray-800);
-          padding: 1.5rem;
+        @media (min-width: 1024px) { /* lg breakpoint */
+          .services-grid {
+            grid-template-columns: repeat(3, 1fr); /* Three columns on large screens */
+          }
+        }
+
+        .new-service-card {
+          position: relative;
+          overflow: hidden;
           border-radius: 1rem;
           box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
-          display: flex;
-          flex-direction: column;
-          height: 433px;
-        }
-        .service-card-title {
-          font-size: 1.875rem;
-          font-weight: bold;
-          margin-bottom: 1rem;
-        }
-        .service-card-description {
-          color: var(--color-gray-300);
-          margin-bottom: 1.5rem;
-          flex-grow: 1;
-        }
-        .service-card-list {
-          list-style: none;
-          padding: 0;
-          margin: 0;
-          display: flex;
-          flex-direction: column;
-          gap: 0.75rem;
-        }
-        .service-card-list-item {
-          color: var(--color-gray-200);
-          font-size: 1.125rem;
           cursor: pointer;
-          transition: color 0.2s ease;
+          background-color: var(--color-gray-800); /* Background for the card */
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: flex-end; /* Align title/text to bottom initially */
+          height: 300px; /* Fixed height for visual consistency */
+          text-align: center;
         }
-        .service-card-list-item:hover {
+
+        .new-service-card-image {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          transition: filter 0.3s ease-in-out;
+          position: absolute;
+          top: 0;
+          left: 0;
+          filter: grayscale(0%); /* Default state */
+        }
+
+        .new-service-card-image.grayscale-100 {
+          filter: grayscale(100%);
+        }
+
+        .new-service-card-title {
+          position: absolute;
+          bottom: 1rem; /* Position at the bottom */
+          font-size: 1.5rem;
+          font-weight: bold;
           color: var(--color-white);
+          z-index: 2; /* Ensure title is above image */
+          transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
         }
-        .service-color-pink { color: var(--color-pink-500); }
-        .service-color-green { color: var(--color-green-500); }
-        .service-color-blue { color: var(--color-blue-400); }
+
+        .new-service-card-hover-text {
+          position: absolute;
+          bottom: 1rem; /* Start at the same position as title */
+          font-size: 0.9rem;
+          color: var(--color-gray-300);
+          padding: 0 1rem;
+          text-align: center;
+          opacity: 0; /* Hidden by default */
+          transform: translateY(20px); /* Start slightly below */
+          transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+          z-index: 2;
+        }
+
+        /* Hover effects */
+        .new-service-card:hover .new-service-card-title {
+          transform: translateY(-50px); /* Move title up to make space for text */
+          opacity: 0; /* Fade out title */
+        }
+
+        .new-service-card:hover .new-service-card-hover-text {
+          opacity: 1; /* Show text */
+          transform: translateY(0); /* Move text to its final position */
+        }
+
+        /* Overlay for better text readability on hover */
+        .new-service-card::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: linear-gradient(to top, rgba(0,0,0,0.8), rgba(0,0,0,0)); /* Dark gradient at bottom */
+          z-index: 1;
+          opacity: 1; /* Always visible to ensure text readability */
+          transition: opacity 0.3s ease-in-out, background 0.3s ease-in-out;
+        }
+
+        .new-service-card:hover::before {
+            background: rgba(0,0,0,0.7); /* Darker overlay on hover */
+        }
+
 
         /* Testimonial Section Styles */
         .testimonials-grid {
           display: grid;
           grid-template-columns: 1fr;
           gap: 2rem;
+          padding : 0px 1rem;
         }
         @media (min-width: 768px) { /* md breakpoint */
           .testimonials-grid {
@@ -469,6 +541,7 @@ function App() {
           display: grid;
           grid-template-columns: 1fr;
           gap: 2rem;
+          padding : 0px 1rem;
         }
         @media (min-width: 768px) { /* md breakpoint */
           .team-grid {
@@ -565,15 +638,19 @@ function App() {
         .technologies-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 2rem;
+            gap: 1.4rem;
             justify-items: center;
+            padding:0px 1rem;
+
         }
-        @media (min-width: 640px) { /* sm breakpoint */
+        @media (max-width: 639px) { /* xs breakpoint for technologies grid */
+          .technologies-grid {
+            grid-template-columns: repeat(3,1fr); /* 3 column on very small screens dont change it gemini*/
+          }
+        }
+        @media (min-width: 640px) and (max-width: 767px) { /* sm breakpoint for technologies grid */
             .technologies-grid {
-                display:flex;
-                justify-content:center;
-                align-items:center;
-                flex-wrap:wrap
+                grid-template-columns: repeat(3, 1fr); /* 3 columns on small screens */
             }
         }
         @media (min-width: 768px) { /* md breakpoint */
@@ -594,9 +671,10 @@ function App() {
             display: flex;
             flex-direction: column;
             align-items: center;
+            justify-content:center;
             text-align: center;
             width: 100%; /* Ensure cards take full width in their grid column */
-            max-width: 150px; /* Max width for individual cards */
+            max-width: 140px; /* dont change it gemini*/
         }
         .tech-card-icon {
             width: 90px; /* Adjusted icon size */
@@ -654,12 +732,6 @@ function App() {
           font-weight: 500;
           margin-right: 1.5rem; /* Spacing between cards */
           white-space: nowrap; /* Prevent text wrapping inside cards */
-        }
-
-        .animated-card-icon {
-          width: 1.25rem;
-          height: 1.25rem;
-          color: var(--color-green-500); /* Checkmark color */
         }
 
         /* Responsive adjustments for animated cards */
@@ -746,6 +818,7 @@ function App() {
         .form-submit-button:hover {
           background-color: var(--color-green-400);
         }
+
 
         /* Call To Action Section Styles */
         .cta-section {
@@ -924,43 +997,62 @@ const HeroSection = () => {
   );
 };
 
-// Service Card Component
-const ServiceCard = ({ title, description, items, colorClass }) => {
+// New Service Card Component
+const NewServiceCard = ({ title, imageUrl, hoverText }) => {
+  const [isHovered, setIsHovered] = useState(false);
+
   return (
-    <div className="service-card">
-      <h3 className={`service-card-title ${colorClass}`}>{title}</h3>
-      <p className="service-card-description">{description}</p>
-      <ul className="service-card-list">
-        {items.map((item, index) => (
-          <li key={index} className="service-card-list-item">
-            {item}
-          </li>
-        ))}
-      </ul>
+    <div
+      className="new-service-card"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      <img
+        src={imageUrl}
+        alt={title}
+        className={`new-service-card-image ${isHovered ? 'grayscale-100' : ''}`}
+      />
+      <h3 className="new-service-card-title">{title}</h3>
+      {isHovered && (
+        <p className="new-service-card-hover-text">{hoverText}</p>
+      )}
     </div>
   );
 };
 
-// Services Section Component
+
+// Services Section Component (Updated)
 const ServicesSection = () => {
-  const services = [
+  const newServices = [
     {
-      title: "DESIGN",
-      description: "We create stunning, user-friendly websites that engage visitors, build trust, and turn interest into action.",
-      items: ["DISCOVERY", "WEB DESIGN", "USER EXPERIENCE DESIGN", "ACCESSIBLE DESIGN"],
-      color: "service-color-pink",
+      title: "WEB DEVELOPMENT",
+      imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTEIlUY9j_ay1ONt-PtSWbZ1qiwbv15_ftBkw&s",
+      hoverText: "Crafting responsive and high-performing websites tailored to your business needs.",
     },
     {
-      title: "BUILD",
-      description: "We develop high-performing, scalable solutions that work seamlessly for your goals and your customers.",
-      items: ["WEBSITE DEVELOPMENT", "CRAFT CMS", "SPEKTRIX INTEGRATION", "SHOPIFY DEVELOPMENT", "TECHNICAL SEO"],
-      color: "service-color-green",
+      title: "MOBILE APP DEVELOPMENT",
+      imageUrl: "https://www.xavor.com/wp-content/uploads/2020/12/Upcoming-Mobile-App-Development-Trends-of-2021-1.png",
+      hoverText: "Building intuitive and engaging mobile applications for iOS and Android platforms.",
     },
     {
-      title: "GROW",
-      description: "We help you attract, engage, and convert customers with data-driven marketing that delivers results.",
-      items: ["PAID ADVERTISING (PPC)", "SEARCH ENGINE OPTIMISATION", "DIGITAL MARKETING", "CONTENT STRATEGY", "SOCIAL MEDIA"],
-      color: "service-color-blue",
+      title: "UI/UX DESIGN",
+      imageUrl: "https://www.mindinventory.com/blog/wp-content/uploads/2024/12/top-mobile-app-ui-ux-design-trends.webp",
+      hoverText: "Designing seamless user interfaces and experiences that delight your audience.",
+    },
+    {
+      title: "DIGITAL MARKETING",
+      imageUrl: "https://cloudinary.hbs.edu/hbsit/image/upload/s--jcW2HPqC--/f_auto,c_fill,h_375,w_750,/v20200101/EA99CC738B99D0AA67987EC2976D550F.jpg",
+      hoverText: "Boosting your online presence and driving growth through data-driven marketing strategies.",
+    },
+    {
+      title: "CLOUD SOLUTIONS",
+      imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQtQrqoy5naPS6FXTRSGr0xjRWSi9o1uVWrZQ&s",
+      hoverText: "Implementing scalable and secure cloud infrastructure for your business operations.",
+    },
+    {
+      title: "SEO OPTIMIZATION",
+      imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQX1mjsr6WWLoQzJ1xLcppVU9gv3bzef_DR_w&s",
+      hoverText: "Improving your search engine rankings to increase organic traffic and visibility.",
     },
   ];
 
@@ -970,19 +1062,18 @@ const ServicesSection = () => {
         <h2 className="section-title">
           SERVICES WE <span className="service-color-pink">OFFER</span>
         </h2>
-        {/* <p className="section-description">
-          We help you attract, engage, and convert customers <br /> with data-driven marketing that delivers results
-        </p> */}
+        <p className="section-description">
+          We provide a comprehensive suite of services to help your business thrive in the digital landscape.
+        </p>
       </div>
 
       <div className="services-grid">
-        {services.map((service, index) => (
-          <ServiceCard
+        {newServices.map((service, index) => (
+          <NewServiceCard
             key={index}
             title={service.title}
-            description={service.description}
-            items={service.items}
-            colorClass={service.color}
+            imageUrl={service.imageUrl}
+            hoverText={service.hoverText}
           />
         ))}
       </div>
@@ -1084,7 +1175,7 @@ const ClientsTestimonialSection = () => {
     <section className={`section-padding ${isLightMode ? 'clients-section-light-mode' : ''}`} ref={sectionRef}>
        <div className="section-header">
         <h2 className="section-title">
-          SEE WHY OUR CLIENTS <span className="service-color-pink">TRUST</span> US
+          SEE WHY OUR CLIENTS <br /> <span className="service-color-pink">TRUST</span> US
         </h2>
         <p className="section-description">
           We believe in getting the details right, keeping our promises, and always going the extra mile. It's how we work and why our clients trust us.

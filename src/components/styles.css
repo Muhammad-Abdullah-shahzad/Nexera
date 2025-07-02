@@ -1,6 +1,7 @@
 @media screen and (max-width: 450px) {
   .technologies-grid {
     gap: 1rem !important;
+    grid-template-columns: repeat(2, 1fr) !important;
   }
   .tech-card {
     max-width: 125px !important;
@@ -8,4 +9,7 @@
   .hero-title{
     margin-top: 100px !important;
   }
+  
+
+
 }
