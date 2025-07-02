@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
+// Removed framer-motion import due to module resolution issues
 import "./styles.css" 
 // Main App Component
 function App() {
-  // isLightMode state and IntersectionObserver are removed from App,
-  // as theme switching is now localized to ClientsTestimonialSection.
+  // State to control the light mode for sections
+  const [isLightModeActive, setIsLightModeActive] = useState(false);
 
   return (
     <div className="app-container">
@@ -381,21 +382,25 @@ function App() {
           justify-content: flex-end; /* Align title/text to bottom initially */
           height: 300px; /* Fixed height for visual consistency */
           text-align: center;
+          transition: background-color 0.5s ease-in-out, color 0.5s ease-in-out, box-shadow 0.5s ease-in-out; /* Add transition */
         }
 
         .new-service-card-image {
           width: 100%;
           height: 100%;
           object-fit: cover;
-          transition: filter 0.3s ease-in-out;
+          transition: filter 0.3s ease-in-out, transform 0.3s ease-in-out; /* Added transform to transition */
           position: absolute;
           top: 0;
           left: 0;
-          filter: grayscale(0%); /* Default state */
+          filter: blur(0px); /* Default state: no blur */
+          transform: scale(1); /* Default state: no zoom */
         }
 
-        .new-service-card-image.grayscale-100 {
-          filter: grayscale(100%);
+        /* Modified to apply blur and zoom on hover */
+        .new-service-card:hover .new-service-card-image {
+          filter: blur(5px); /* Apply blur on hover */
+          transform: scale(1.05); /* Zoom in slightly on hover */
         }
 
         .new-service-card-title {
@@ -440,7 +445,7 @@ function App() {
           left: 0;
           width: 100%;
           height: 100%;
-          background: linear-gradient(to top, rgba(0,0,0,0.8), rgba(0,0,0,0)); /* Dark gradient at bottom */
+        
           z-index: 1;
           opacity: 1; /* Always visible to ensure text readability */
           transition: opacity 0.3s ease-in-out, background 0.3s ease-in-out;
@@ -470,6 +475,7 @@ function App() {
           box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
           display: flex;
           flex-direction: column;
+          transition: background-color 0.5s ease-in-out, color 0.5s ease-in-out, box-shadow 0.5s ease-in-out; /* Add transition */
         }
         .testimonial-rating {
           display: flex;
@@ -562,6 +568,7 @@ function App() {
           flex-direction: column;
           align-items: flex-start;
           text-align: left;
+          transition: background-color 0.5s ease-in-out, color 0.5s ease-in-out, box-shadow 0.5s ease-in-out; /* Add transition */
         }
         .team-card-icon {
           margin-bottom: 1rem;
@@ -660,21 +667,24 @@ function App() {
         }
         @media (min-width: 1024px) { /* lg breakpoint */
             .technologies-grid {
-                grid-template-columns: repeat(6, 1fr);
+                grid-template-columns: repeat(4, 1fr);
+                padding : 0px 16rem;
             }
         }
         .tech-card {
-            background-color: var(--color-gray-800);
+            background-color: var(--color-gray-200);
             padding: 1.5rem 1rem;
             border-radius: 1rem;
             box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
             display: flex;
+          
             flex-direction: column;
             align-items: center;
             justify-content:center;
             text-align: center;
             width: 100%; /* Ensure cards take full width in their grid column */
             max-width: 140px; /* dont change it gemini*/
+            transition: background-color 0.5s ease-in-out, color 0.5s ease-in-out, box-shadow 0.5s ease-in-out; /* Add transition */
         }
         .tech-card-icon {
             width: 90px; /* Adjusted icon size */
@@ -685,7 +695,7 @@ function App() {
         .tech-card-name {
             font-size: 1rem;
             font-weight: 600;
-            color: var(--color-white);
+            color:var(--color-gray-800);
         }
 
 
@@ -760,6 +770,7 @@ function App() {
           padding: 3.3rem; /* Consistent padding */
           border-radius: 1rem;
           box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
+          transition: background-color 0.5s ease-in-out, color 0.5s ease-in-out, box-shadow 0.5s ease-in-out; /* Add transition */
         }
         .contact-form {
           display: flex;
@@ -829,6 +840,7 @@ function App() {
           margin-top: 4rem;
           margin-bottom: 4rem;
           box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
+          transition: background-color 0.5s ease-in-out, color 0.5s ease-in-out, box-shadow 0.5s ease-in-out; /* Add transition */
         }
 
         .cta-title {
@@ -875,6 +887,7 @@ function App() {
           padding: 2rem 0;
           text-align: center;
           color: var(--color-gray-400);
+          transition: background-color 0.5s ease-in-out, color 0.5s ease-in-out; /* Add transition */
         }
         .footer-links {
           display: flex;
@@ -890,6 +903,183 @@ function App() {
         .footer-link:hover {
           color: var(--color-white);
         }
+
+        /* Light Theme Active Styles (applied to main when ClientsTestimonialSection is visible) */
+        .main-content.light-theme-active {
+          background-color: var(--color-gray-200);
+          color: var(--color-black);
+          transition: background-color 0.5s ease-in-out, color 0.5s ease-in-out;
+        }
+
+        .main-content.light-theme-active .section-header .section-title,
+        .main-content.light-theme-active .section-header .section-description {
+          color: var(--color-black);
+        }
+
+        .main-content.light-theme-active .new-service-card,
+        .main-content.light-theme-active .testimonial-card,
+        .main-content.light-theme-active .team-card,
+        .main-content.light-theme-active .tech-card {
+          background-color: var(--color-white);
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .main-content.light-theme-active .new-service-card-title,
+        .main-content.light-theme-active .testimonial-quote,
+        .main-content.light-theme-active .testimonial-author-name,
+        .main-content.light-theme-active .team-card-title,
+        .main-content.light-theme-active .tech-card-name {
+          color: var(--color-gray-900);
+        }
+
+        .main-content.light-theme-active .new-service-card-hover-text,
+        .main-content.light-theme-active .testimonial-author-company,
+        .main-content.light-theme-active .team-card-description {
+          color: var(--color-700);
+        }
+
+        .main-content.light-theme-active .tech-tab {
+          background-color: var(--color-gray-300);
+          color: var(--color-gray-800);
+        }
+
+        .main-content.light-theme-active .tech-tab:hover {
+          background-color: var(--color-gray-400);
+        }
+
+        .main-content.light-theme-active .tech-tab.active {
+          background-color: var(--color-blue-400);
+          color: var(--color-black);
+          border-color: var(--color-blue-400);
+        }
+        .main-content.light-theme-active .form-group label {
+          color: var(--color-gray-700);
+        }
+        .main-content.light-theme-active .form-group input,
+        .main-content.light-theme-active .form-group textarea {
+          background-color: var(--color-gray-300);
+          color: var(--color-gray-900);
+          border-color: var(--color-gray-400);
+        }
+        .main-content.light-theme-active .form-group input::placeholder,
+        .main-content.light-theme-active .form-group textarea::placeholder {
+          color: var(--color-gray-600);
+        }
+        .main-content.light-theme-active .contact-form-container,
+        .main-content.light-theme-active .cta-section {
+          background-color: var(--color-white);
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .main-content.light-theme-active .cta-title,
+        .main-content.light-theme-active .cta-description {
+          color: var(--color-black);
+        }
+        .main-content.light-theme-active .footer {
+          background-color: var(--color-gray-300);
+          color: var(--color-gray-700);
+        }
+        .main-content.light-theme-active .footer-link {
+          color: var(--color-gray-700);
+        }
+        .main-content.light-theme-active .footer-link:hover {
+          color: var(--color-black);
+        }
+
+        /* About Us Section Styles */
+        .about-us-section {
+          display: flex;
+          flex-direction: column; /* Stack on mobile */
+          align-items: center;
+          padding: 4rem 1rem;
+          gap: 2rem;
+          text-align: center;
+        }
+        @media (min-width: 768px) { /* md breakpoint */
+          .about-us-section {
+            flex-direction: row; /* Side-by-side on desktop */
+            text-align: left;
+            padding: 6rem 2rem;
+          }
+        }
+        @media (min-width: 1024px) { /* lg breakpoint */
+          .about-us-section {
+            padding: 8rem 4rem;
+          }
+        }
+
+        .about-us-image-container {
+          flex: 1;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          max-width: 100%; /* Ensure it doesn't overflow */
+        }
+
+        .about-us-image {
+          width: 100%;
+          max-width: 500px; /* Max width for the image */
+          height: auto;
+          border-radius: 1rem;
+          box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+          object-fit: cover;
+        }
+
+        .about-us-content {
+          flex: 1;
+          max-width: 100%;
+        }
+        @media (min-width: 768px) {
+          .about-us-content {
+            max-width: 50%; /* Take half width on larger screens */
+          }
+        }
+
+        .about-us-title {
+          font-family: 'Bebas Neue', sans-serif;
+          font-weight: 800;
+          font-size: 2.5rem;
+          margin-bottom: 1rem;
+          color: var(--color-white); /* Default dark mode color */
+        }
+        @media (min-width: 640px) {
+          .about-us-title {
+            font-size: 3rem;
+          }
+        }
+        @media (min-width: 1024px) {
+          .about-us-title {
+            font-size: 3.75rem;
+          }
+        }
+
+        .about-us-description {
+          font-size: 1.125rem;
+          line-height: 1.8;
+          /* Removed color and opacity as framer-motion will control */
+        }
+
+        .about-us-word {
+          display: inline-block; /* Allows individual character styling and spacing */
+          transition: opacity 0.2s ease-out, color 0.2s ease-out; /* Faster transition for individual character */
+          opacity: 0.3; /* Initial dim state */
+          color: var(--color-gray-400); /* Initial dim color */
+        }
+
+        .about-us-word.bright {
+          opacity: 1; /* Bright state */
+          color: var(--color-white); /* Bright color */
+        }
+
+        /* Light theme adjustments for About Us section */
+        .main-content.light-theme-active .about-us-title {
+          color: var(--color-black); /* Dark text in light mode */
+        }
+        .main-content.light-theme-active .about-us-description .about-us-word {
+          color: var(--color-gray-700); /* Darker gray for description in light mode */
+        }
+        .main-content.light-theme-active .about-us-description .about-us-word.bright {
+          color: var(--color-black); /* Bright text in light mode */
+        }
         `}
       </style>
 
@@ -897,18 +1087,21 @@ function App() {
       <Navbar />
 
       {/* Main Content */}
-      <main className="container main-content">
+      <main className={`container main-content ${isLightModeActive ? 'light-theme-active' : ''}`}>
         {/* Hero Section */}
         <HeroSection />
 
         {/* New Animated Cards Section */}
         <AnimatedCardsSection />
 
+        {/* About Us Section */}
+        <AboutUsSection />
+
         {/* Services Section */}
         <ServicesSection />
 
         {/* Clients Testimonial Section */}
-        <ClientsTestimonialSection />
+        <ClientsTestimonialSection setIsLightModeActive={setIsLightModeActive} />
 
         {/* Team Section */}
         <TeamSection />
@@ -1010,7 +1203,8 @@ const NewServiceCard = ({ title, imageUrl, hoverText }) => {
       <img
         src={imageUrl}
         alt={title}
-        className={`new-service-card-image ${isHovered ? 'grayscale-100' : ''}`}
+        className={`new-service-card-image`} 
+        style={{ filter: isHovered ? 'blur(5px)' : 'blur(0px)', transform: isHovered ? 'scale(1.05)' : 'scale(1)' }} 
       />
       <h3 className="new-service-card-title">{title}</h3>
       {isHovered && (
@@ -1026,32 +1220,32 @@ const ServicesSection = () => {
   const newServices = [
     {
       title: "WEB DEVELOPMENT",
-      imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTEIlUY9j_ay1ONt-PtSWbZ1qiwbv15_ftBkw&s",
+      imageUrl: "https://c1.wallpaperflare.com/preview/836/993/134/abstract-business-code-coder.jpg",
       hoverText: "Crafting responsive and high-performing websites tailored to your business needs.",
     },
     {
       title: "MOBILE APP DEVELOPMENT",
-      imageUrl: "https://www.xavor.com/wp-content/uploads/2020/12/Upcoming-Mobile-App-Development-Trends-of-2021-1.png",
+      imageUrl: "https://media.gettyimages.com/id/1461380702/video/two-programmer-development-engineers-working-on-computers-coding-together.jpg?s=640x640&k=20&c=ZndLJ09tf8lue90YtpL_u3BPZTE_9xCTyyLMUa1W328=",
       hoverText: "Building intuitive and engaging mobile applications for iOS and Android platforms.",
     },
     {
       title: "UI/UX DESIGN",
-      imageUrl: "https://www.mindinventory.com/blog/wp-content/uploads/2024/12/top-mobile-app-ui-ux-design-trends.webp",
+      imageUrl: "https://i.pinimg.com/736x/9c/b3/1e/9cb31e8260872fa19cea813b19f9904b.jpg",
       hoverText: "Designing seamless user interfaces and experiences that delight your audience.",
     },
     {
       title: "DIGITAL MARKETING",
-      imageUrl: "https://cloudinary.hbs.edu/hbsit/image/upload/s--jcW2HPqC--/f_auto,c_fill,h_375,w_750,/v20200101/EA99CC738B99D0AA67987EC2976D550F.jpg",
+      imageUrl: "https://w0.peakpx.com/wallpaper/420/405/HD-wallpaper-superstar-seo-provides-educational-content-on-seo-and-digital-marketing-to-people-at-every-level-of-experience.jpg",
       hoverText: "Boosting your online presence and driving growth through data-driven marketing strategies.",
     },
     {
       title: "CLOUD SOLUTIONS",
-      imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQtQrqoy5naPS6FXTRSGr0xjRWSi9o1uVWrZQ&s",
+      imageUrl: "https://neontri.com/wp-content/uploads/2025/02/application-development-for-the-cloud.webp",
       hoverText: "Implementing scalable and secure cloud infrastructure for your business operations.",
     },
     {
       title: "SEO OPTIMIZATION",
-      imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQX1mjsr6WWLoQzJ1xLcppVU9gv3bzef_DR_w&s",
+      imageUrl: "https://w0.peakpx.com/wallpaper/660/80/HD-wallpaper-2-seo-digital-marketing.jpg",
       hoverText: "Improving your search engine rankings to increase organic traffic and visibility.",
     },
   ];
@@ -1081,6 +1275,97 @@ const ServicesSection = () => {
   );
 };
 
+// About Us Section Component
+const AboutUsSection = () => {
+  const aboutUsDescription = "At Nexera, we are passionate about crafting exceptional digital experiences that drive growth and innovation for businesses worldwide. With a dedicated team of over 19 talented UX/UI Designers, Strategists, Developers, and Digital Marketers, we pride ourselves on delivering high-performing software solutions without any outsourcing. Our commitment to quality assurance ensures that every project we undertake adheres to the highest standards and best practices. We believe in getting the details right, keeping our promises, and always going the extra mile to exceed client expectations. From initial concept to post-launch support, we are your trusted partner in navigating the complexities of the digital landscape, guaranteeing your success and fostering long-term relationships built on trust and results. Our expertise spans across web development, mobile app creation, intuitive UI/UX design, strategic digital marketing, robust cloud solutions, and effective SEO optimization. We are constantly evolving, embracing the latest tools and frameworks to ensure your business not only keeps pace with technological advancements but also scales efficiently and effectively in an ever-changing market.";
+
+  // Split the text into words
+  const words = aboutUsDescription.split(' ');
+
+  // State to manage the brightness of each word
+  const [brightWords, setBrightWords] = useState(words.map(() => false));
+  const sectionRef = useRef(null);
+  const timeoutRefs = useRef([]); // To store timeout IDs for cleanup
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          // When the section enters the viewport, start the word-by-word animation
+          timeoutRefs.current.forEach(clearTimeout); // Clear any existing timeouts
+          timeoutRefs.current = []; // Reset the array
+
+          // Reset all words to dim before starting new animation
+          setBrightWords(words.map(() => false)); // Reset state
+
+          words.forEach((_, wordIndex) => {
+            const timeoutId = setTimeout(() => {
+              setBrightWords(prevBrightWords => {
+                const newBrightWords = [...prevBrightWords];
+                newBrightWords[wordIndex] = true;
+                return newBrightWords;
+              });
+            }, wordIndex * 50); // Adjust delay (e.g., 50ms per word) for speed
+            timeoutRefs.current.push(timeoutId);
+          });
+        } else {
+          // When the section leaves the viewport, clear all timeouts and dim all words
+          timeoutRefs.current.forEach(clearTimeout);
+          timeoutRefs.current = [];
+          setBrightWords(words.map(() => false)); // Dim all words
+        }
+      },
+      {
+        root: null, // Use the viewport
+        rootMargin: '0px',
+        threshold: 0, // Trigger when any part of the section is visible
+      }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    // Cleanup function: disconnect the observer and clear all timeouts when the component unmounts
+    return () => {
+      observer.disconnect();
+      timeoutRefs.current.forEach(clearTimeout);
+    };
+  }, []); // Empty dependency array: runs once on mount, observer handles updates
+
+
+  return (
+    <section className="about-us-section section-padding" ref={sectionRef}>
+      <div className="about-us-image-container">
+        <img
+          src="https://placehold.co/600x400/333/FFF?text=About+Us+Image"
+          alt="About Us"
+          className="about-us-image"
+        />
+      </div>
+      <div className="about-us-content">
+        <h2 className="about-us-title">
+          ABOUT <span className="service-color-pink">NEXERA</span>
+        </h2>
+        <p className="about-us-description">
+          {words.map((word, index) => (
+            <React.Fragment key={index}>
+              <span
+                className={`about-us-word ${brightWords[index] ? 'bright' : ''}`}
+              >
+                {word}
+              </span>
+              {/* Add a space after each word, except the last one, to maintain natural spacing */}
+              {index < words.length - 1 && ' '}
+            </React.Fragment>
+          ))}
+        </p>
+      </div>
+    </section>
+  );
+};
+
+
 // Testimonial Card Component
 const TestimonialCard = ({ rating, quote, author, company, logoUrl }) => {
   return (
@@ -1108,23 +1393,19 @@ const TestimonialCard = ({ rating, quote, author, company, logoUrl }) => {
 
 // Clients Testimonial Section Component
 // This component now manages its own theme based on visibility
-const ClientsTestimonialSection = () => {
-  const [isLightMode, setIsLightMode] = useState(false);
+const ClientsTestimonialSection = ({ setIsLightModeActive }) => {
   const sectionRef = useRef(null);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsLightMode(true); // Switch to light mode for this section
-        } else {
-          setIsLightMode(false); // Revert to dark mode for this section
-        }
+        // Update the parent's state based on intersection
+        setIsLightModeActive(entry.isIntersecting);
       },
       {
         root: null, // Use the viewport as the root
         rootMargin: '0px', // No margin
-        threshold: 0.5, // Trigger when 50% of the section is visible
+        threshold: 0.1, // Trigger when 10% of the section is visible
       }
     );
 
@@ -1138,7 +1419,7 @@ const ClientsTestimonialSection = () => {
         observer.unobserve(sectionRef.current);
       }
     };
-  }, []); // Empty dependency array means this effect runs once on mount and cleans up on unmount
+  }, [setIsLightModeActive]); // Dependency array includes setIsLightModeActive
 
   const testimonials = [
     {
@@ -1172,7 +1453,7 @@ const ClientsTestimonialSection = () => {
   ];
 
   return (
-    <section className={`section-padding ${isLightMode ? 'clients-section-light-mode' : ''}`} ref={sectionRef}>
+    <section className="section-padding" ref={sectionRef}>
        <div className="section-header">
         <h2 className="section-title">
           SEE WHY OUR CLIENTS <br /> <span className="service-color-pink">TRUST</span> US
@@ -1453,7 +1734,7 @@ const AnimatedCardsSection = () => {
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="animated-card-icon"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
       ) },
     { name: "Web Development", icon: (
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="animated-card-icon"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="animated-card-icon"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1 4-10 15.3 15.3 0 0 1 4-10z"/></svg>
       ) },
   ];
 
@@ -1475,6 +1756,9 @@ const AnimatedCardsSection = () => {
         for (let i = 0; i < cards.length; i++) { // cards.length is the original count
           if (children[i]) {
             totalWidth += children[i].offsetWidth + cardMarginRight;
+          }
+          else {
+            console.warn(`Child at index ${i} not found in firstHalfRef.current.children`);
           }
         }
         // Set the container's width to twice the total width of the original set of cards
