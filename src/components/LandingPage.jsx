@@ -6,11 +6,10 @@ function App() {
   // State to control the light mode for sections
   const [isLightModeActive, setIsLightModeActive] = useState(false);
 
-  // Define product images for the new section
-  // REPLACE THESE WITH YOUR ACTUAL PORTFOLIO IMAGE URLs
+  // Define images for the animated product showcase section (formerly productImages)
   const productImages = [
     "https://www.ue-germany.com/uploads/sites/9/2021/12/uxuidesign_erina-baftiroska_2800x1200px.png?w=1380&h=776&crop=1",
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRfHTQewZQrSBwpPFL3v-iP2qfdZOmKUn-yyQ&s",
+    "https://shaynakit.com/storage/assets/cover_project/RieLrSZWwO2tv0ggV5ioq4DoyejdKC0fxhMhZjAo.png",
     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR40GVeo1rP4rTFz0Z5uCanInulfoa0qYV2QSCkHQSig7Iz7DgJH0cH3hDW5pOw45_5Y3k&usqp=CAU",
     "https://fiverr-res.cloudinary.com/images/t_main1,q_auto,f_auto/gigs/326588785/original/f64189622e62639beac78e6e189c2315981e25e8/do-mobile-app-ui-ux-design-in-figma.jpg",
     "https://cdn.dribbble.com/userupload/43358248/file/original-8431914111dc9de01771e44cf3ee6a54.png?resize=752x&vertical=center",
@@ -18,6 +17,51 @@ function App() {
     "https://fiverr-res.cloudinary.com/images/t_main1,q_auto,f_auto,q_auto,f_auto/gigs/336930214/original/edaa674c176e4a0af22958a4917797e85bc2dcec/do-website-ui-design-and-mobile-app-ui-ux-design-ui-ux-design-in-figma.png",
     "https://fiverr-res.cloudinary.com/images/t_main1,q_auto,f_auto/gigs/225733566/original/bd971696f26cbe92b6e2d149bac420dd199b3a10/create-website-ui-ux-design-or-web-ui-template-in-figma-xd-or-photoshop-453a.jpg",
   ];
+
+  // Define portfolio items for the NEW staggered portfolio section
+  const portfolioItems = [
+    {
+      image: "https://www.ue-germany.com/uploads/sites/9/2021/12/uxuidesign_erina-baftiroska_2800x1200px.png?w=1380&h=776&crop=1",
+      title: "UI/UX Design Project",
+      description: "Crafting intuitive and beautiful user interfaces for modern applications."
+    },
+    {
+      image: "https://shaynakit.com/storage/assets/cover_project/RieLrSZWwO2tv0ggV5ioq4DoyejdKC0fxhMhZjAo.png",
+      title: "Web Development Solution",
+      description: "Building robust and high-performing web applications with cutting-edge technologies."
+    },
+    {
+      image: "https://mir-s3-cdn-cf.behance.net/projects/404/c87609212421217.Y3JvcCwzMDY4LDI0MDAsMCww.jpg",
+      title: "Mobile App Design",
+      description: "Designing engaging and user-friendly mobile experiences for iOS and Android."
+    },
+    {
+      image: "https://fiverr-res.cloudinary.com/images/t_main1,q_auto,f_auto/gigs/326588785/original/f64189622e62639beac78e6e189c2315981e25e8/do-mobile-app-ui-ux-design-in-figma.jpg",
+      title: "Figma UI/UX Project",
+      description: "Interactive prototypes and user-centered designs using Figma for seamless collaboration."
+    },
+    {
+      image: "https://cdn.dribbble.com/userupload/43358248/file/original-8431914111dc9de01771e44cf3ee6a54.png?resize=752x&vertical=center",
+      title: "Digital Product Showcase",
+      description: "Visually highlighting key features and benefits of digital products to captivate audiences."
+    },
+    {
+      image: "https://www.bypeople.com/wp-content/uploads/2021/10/figma-ui-cover.png",
+      title: "Brand Identity Creation",
+      description: "Developing strong and memorable brand visuals that resonate with your target audience."
+    },
+    {
+      image: "https://fiverr-res.cloudinary.com/images/t_main1,q_auto,f_auto,q_auto,f_auto/gigs/336930214/original/edaa674c176e4a0af22958a4917797e85bc2dcec/do-website-ui-design-and-mobile-app-ui-ux-design-ui-ux-design-in-figma.png",
+      title: "Website UI/UX Redesign",
+      description: "Modernizing interfaces for improved usability and a fresh, contemporary look."
+    },
+    {
+      image: "https://fiverr-res.cloudinary.com/images/t_main1,q_auto,f_auto/gigs/225733566/original/bd971696f26cbe92b6e2d149bac420dd199b3a10/create-website-ui-ux-design-or-web-ui-template-in-figma-xd-or-photoshop-453a.jpg",
+      title: "Web Template Development",
+      description: "Creating customizable and scalable web templates for diverse business needs."
+    },
+  ];
+
 
   return (
     <div className="app-container">
@@ -774,7 +818,7 @@ function App() {
         }
 
 
-        /* New Product Showcase Section Styles */
+        /* Product Showcase Section Styles (reverted from previous Portfolio section) */
         .product-showcase-section {
           padding: 4rem 0;
           overflow: hidden; /* Crucial for hiding overflowing content */
@@ -846,6 +890,94 @@ function App() {
             width: 280px; /* Medium images on tablet */
             height: 200px;
           }
+        }
+
+
+        /* NEW Portfolio Section Styles (staggered cards) */
+        .portfolio-section-staggered {
+          padding: 4rem 1rem; /* Add padding for the section */
+          background-color: var(--color-black);
+        }
+
+        .portfolio-staggered-grid {
+          display: grid;
+          grid-template-columns: 1fr; /* Default to single column */
+          gap: 2rem; /* Gap between cards */
+          justify-items: center; /* Center items in their grid cells */
+        }
+
+        @media (min-width: 640px) { /* Small screens and up */
+          .portfolio-staggered-grid {
+            grid-template-columns: repeat(2, 1fr); /* Two columns */
+          }
+        }
+
+        @media (min-width: 1024px) { /* Large screens and up */
+          .portfolio-staggered-grid {
+            grid-template-columns: repeat(3, 1fr); /* Three columns */
+          }
+        }
+
+        .portfolio-staggered-card {
+
+          border-radius: 0px !important;
+          box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
+          overflow: hidden; /* Ensures image corners are rounded */
+          text-align: center;
+          transition: transform 0.3s ease, margin-top 0.3s ease; /* Smooth transitions */
+          width: 100%; /* Take full width of grid column */
+          max-width: 440px; /* Max width for consistency */
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between; /* Push text to bottom */
+        }
+
+        .portfolio-staggered-card:hover {
+          transform: translateY(-5px); /* Slight lift on hover */
+        }
+
+        .portfolio-staggered-card.odd-stagger {
+          margin-top: 50px; /* Shift odd cards down */
+        }
+
+        @media (max-width: 639px) { /* Adjust stagger for very small screens */
+          .portfolio-staggered-card.odd-stagger {
+            margin-top: 25px;
+          }
+        }
+
+        @media (min-width: 640px) and (max-width: 1023px) { /* Adjust stagger for medium screens */
+          .portfolio-staggered-card.odd-stagger {
+            margin-top: 40px;
+          }
+        }
+
+        .portfolio-staggered-card-image {
+          width: 100%;
+          height: 473px; /* Fixed height for images */
+          object-fit: cover;
+   
+        }
+
+        .portfolio-staggered-card-content {
+          padding: 0px 0px;
+          display: flex;
+          flex-direction: column;
+          flex-grow: 1; /* Allow content to take available space */
+   \
+        }
+
+        .portfolio-staggered-card-title {
+          font-size: 1.3rem;
+          font-weight: bold;
+          color: var(--color-white);
+          margin-bottom: 0.5rem;
+        }
+
+        .portfolio-staggered-card-description {
+          font-size: 0.95rem;
+          color: var(--color-gray-300);
+          line-height: 1.5;
         }
 
 
@@ -1197,7 +1329,10 @@ function App() {
         {/* Technologies Section - NEW */}
         <TechnologiesSection />
 
-        {/* Product Showcase Section - MOVED AND UPDATED */}
+        {/* NEW Portfolio Section (Staggered Cards) */}
+        <PortfolioSection portfolioItems={portfolioItems} />
+
+        {/* Product Showcase Section (Animated Images - kept for other use) */}
         <ProductShowcaseSection productImages={productImages} />
 
         {/* Contact Us Section */}
@@ -1897,7 +2032,7 @@ const AnimatedCardsSection = () => {
   );
 };
 
-// NEW Product Showcase Section Component
+// Product Showcase Section Component (reverted from previous PortfolioSection)
 const ProductShowcaseSection = ({ productImages }) => {
   const topRowRef = useRef(null);
   const bottomRowRef = useRef(null);
@@ -1954,7 +2089,7 @@ const ProductShowcaseSection = ({ productImages }) => {
     <section className="product-showcase-section section-padding">
       <div className="section-header">
         <h2 className="section-title">
-          OUR <span className="service-color-pink">PORTFOLIO</span>
+          OUR <span className="service-color-pink">SHOWCASE</span>
         </h2>
         <p className="section-description">
           Explore a selection of our innovative projects and solutions.
@@ -1970,7 +2105,7 @@ const ProductShowcaseSection = ({ productImages }) => {
           }}
         >
           {duplicatedImages.map((image, index) => (
-            <img key={`top-${index}`} src={image} alt={`Portfolio Image ${index + 1}`} className="product-showcase-image" />
+            <img key={`top-${index}`} src={image} alt={`Product Image ${index + 1}`} className="product-showcase-image" />
           ))}
         </div>
         <div
@@ -1982,13 +2117,46 @@ const ProductShowcaseSection = ({ productImages }) => {
           }}
         >
           {duplicatedImages.map((image, index) => (
-            <img key={`bottom-${index}`} src={image} alt={`Portfolio Image ${index + 1}`} className="product-showcase-image" />
+            <img key={`bottom-${index}`} src={image} alt={`Product Image ${index + 1}`} className="product-showcase-image" />
           ))}
         </div>
       </div>
       <div style={{ textAlign: 'center', marginTop: '2rem' }}>
         <button className="cta-button">
-          VIEW PORTFOLIO
+          VIEW ALL PRODUCTS
+        </button>
+      </div>
+    </section>
+  );
+};
+
+
+// NEW Portfolio Section Component (Staggered Cards)
+const PortfolioSection = ({ portfolioItems }) => {
+  return (
+    <section className="portfolio-section-staggered section-padding">
+      <div className="section-header">
+        <h2 className="section-title">
+          OUR <span className="service-color-pink">PORTFOLIO</span>
+        </h2>
+        <p className="section-description">
+          Discover our latest projects and see how we bring ideas to life.
+        </p>
+      </div>
+      <div className="portfolio-staggered-grid">
+        {portfolioItems.map((item, index) => (
+          <div key={index} className={`portfolio-staggered-card ${index % 2 !== 0 ? 'odd-stagger' : ''}`}>
+            <img src={item.image} alt={item.title} className="portfolio-staggered-card-image" />
+            <div className="portfolio-staggered-card-content">
+              <h3 className="portfolio-staggered-card-title">{item.title}</h3>
+              <p className="portfolio-staggered-card-description">{item.description}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+      <div style={{ textAlign: 'center', marginTop: '2rem' }}>
+        <button className="cta-button">
+          VIEW FULL PORTFOLIO
         </button>
       </div>
     </section>
