@@ -1,10 +1,23 @@
 import React, { useState, useEffect, useRef } from 'react';
-// Removed framer-motion import due to module resolution issues
-import "./styles.css" 
+import "./styles.css"
+
 // Main App Component
 function App() {
   // State to control the light mode for sections
   const [isLightModeActive, setIsLightModeActive] = useState(false);
+
+  // Define product images for the new section
+  // REPLACE THESE WITH YOUR ACTUAL PORTFOLIO IMAGE URLs
+  const productImages = [
+    "https://www.ue-germany.com/uploads/sites/9/2021/12/uxuidesign_erina-baftiroska_2800x1200px.png?w=1380&h=776&crop=1",
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRfHTQewZQrSBwpPFL3v-iP2qfdZOmKUn-yyQ&s",
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR40GVeo1rP4rTFz0Z5uCanInulfoa0qYV2QSCkHQSig7Iz7DgJH0cH3hDW5pOw45_5Y3k&usqp=CAU",
+    "https://fiverr-res.cloudinary.com/images/t_main1,q_auto,f_auto/gigs/326588785/original/f64189622e62639beac78e6e189c2315981e25e8/do-mobile-app-ui-ux-design-in-figma.jpg",
+    "https://cdn.dribbble.com/userupload/43358248/file/original-8431914111dc9de01771e44cf3ee6a54.png?resize=752x&vertical=center",
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSCAJJR29Ob1gO45HS1hREE6I2nZMToRPDetA&s",
+    "https://fiverr-res.cloudinary.com/images/t_main1,q_auto,f_auto,q_auto,f_auto/gigs/336930214/original/edaa674c176e4a0af22958a4917797e85bc2dcec/do-website-ui-design-and-mobile-app-ui-ux-design-ui-ux-design-in-figma.png",
+    "https://fiverr-res.cloudinary.com/images/t_main1,q_auto,f_auto/gigs/225733566/original/bd971696f26cbe92b6e2d149bac420dd199b3a10/create-website-ui-ux-design-or-web-ui-template-in-figma-xd-or-photoshop-453a.jpg",
+  ];
 
   return (
     <div className="app-container">
@@ -212,8 +225,8 @@ function App() {
           margin-bottom: 1.5rem;
         }
         .hero-title-text {
-          background-color: #2e2e2e;  
-          color: white;  
+          background-color: #2e2e2e;
+          color: white;
           font-style: italic;
           padding: 0em 0.3em;
           border-radius: 1rem;
@@ -320,7 +333,7 @@ function App() {
           margin-bottom: 3rem;
         }
         .section-title {
-          font-family: 'Bebas Neue', sans-serif; 
+          font-family: 'Bebas Neue', sans-serif;
           font-weight: 800;
           margin-bottom: 0;
         }
@@ -445,7 +458,7 @@ function App() {
           left: 0;
           width: 100%;
           height: 100%;
-        
+
           z-index: 1;
           opacity: 1; /* Always visible to ensure text readability */
           transition: opacity 0.3s ease-in-out, background 0.3s ease-in-out;
@@ -677,7 +690,7 @@ function App() {
             border-radius: 1rem;
             box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
             display: flex;
-          
+
             flex-direction: column;
             align-items: center;
             justify-content:center;
@@ -757,6 +770,81 @@ function App() {
           .animated-card {
             margin-bottom: 0; /* Remove vertical spacing if it was added for wrapping */
             margin-right: 1rem; /* Adjust horizontal spacing for mobile */
+          }
+        }
+
+
+        /* New Product Showcase Section Styles */
+        .product-showcase-section {
+          padding: 4rem 0;
+          overflow: hidden; /* Crucial for hiding overflowing content */
+          background-color: var(--color-black); /* Dark background */
+        }
+
+        .product-showcase-row-wrapper {
+          display: flex;
+          flex-direction: column;
+          gap: 1rem; /* Space between the two rows */
+        }
+
+        .product-showcase-row {
+          display: flex;
+          flex-wrap: nowrap; /* Ensure images stay in a single line */
+          width: max-content; /* Allow content to dictate width */
+          animation-timing-function: linear;
+          animation-iteration-count: infinite;
+          will-change: transform; /* Optimize for animation */
+        }
+
+        .product-showcase-image {
+          flex-shrink: 0; /* Prevent images from shrinking */
+          width: 350px; /* Base width for images, increased from 250px */
+          height: 250px; /* Base height for images, increased from 180px */
+          object-fit: cover;
+          border-radius: 0.75rem; /* Rounded corners */
+          margin-right: 1rem; /* Space between images */
+          box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); /* Subtle shadow */
+          transition: transform 0.2s ease-in-out; /* Smooth hover effect */
+        }
+
+        .product-showcase-image:hover {
+          transform: scale(1.03); /* Slightly enlarge on hover */
+        }
+
+        /* Animation for top row (right to left) */
+        .product-showcase-row.top-row-animation {
+          animation-name: scrollProductLeft;
+          animation-duration: var(--animation-duration-top, 30s); /* Default duration */
+        }
+
+        @keyframes scrollProductLeft {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(calc(-1 * var(--row-width-top))); } /* Scroll by calculated width */
+        }
+
+        /* Animation for bottom row (left to right) */
+        .product-showcase-row.bottom-row-animation {
+          animation-name: scrollProductRight;
+          animation-duration: var(--animation-duration-bottom, 30s); /* Default duration */
+        }
+
+        @keyframes scrollProductRight {
+          0% { transform: translateX(calc(-1 * var(--row-width-bottom))); } /* Start from off-screen left */
+          100% { transform: translateX(0); }
+        }
+
+        /* Responsive adjustments for product showcase images */
+        @media (max-width: 767px) {
+          .product-showcase-image {
+            width: 220px; /* Smaller images on mobile */
+            height: 160px;
+            margin-right: 0.75rem; /* Smaller margin */
+          }
+        }
+        @media (min-width: 768px) and (max-width: 1023px) {
+          .product-showcase-image {
+            width: 280px; /* Medium images on tablet */
+            height: 200px;
           }
         }
 
@@ -1109,9 +1197,12 @@ function App() {
         {/* Technologies Section - NEW */}
         <TechnologiesSection />
 
+        {/* Product Showcase Section - MOVED AND UPDATED */}
+        <ProductShowcaseSection productImages={productImages} />
+
         {/* Contact Us Section */}
         <ContactUsSection />
-        
+
         {/* Call To Action Section - NEW */}
         {/* <CallToActionSection /> */}
       </main>
@@ -1146,7 +1237,7 @@ const Navbar = () => {
 
         {/* Action Buttons (for larger screens) */}
         <div className="navbar-buttons">
-        
+
           <button className="navbar-button-talk">
             LET'S TALK
           </button>
@@ -1177,14 +1268,14 @@ const HeroSection = () => {
       </h1>
       <p className="hero-description">
         Driving growth for leading brandshrough <br className="hidden-sm-inline" />
-        high-performing <span className="hero-title-text">software solutions.</span> 
+        high-performing <span className="hero-title-text">software solutions.</span>
       </p>
 
       {/* Placeholder images - In a real app, these would be optimized and probably loaded from a CDN */}
       {/* <div className="hero-image hero-image-1">
         <img src="https://static.vecteezy.com/system/resources/thumbnails/021/666/129/small/3d-monitor-with-user-interface-elements-for-web-design-software-creator-web-development-application-design-coding-and-programming-on-laptop-concept-3d-rendering-png.png" alt="Digital Experience 1" />
       </div> */}
-    
+
       {/* Removed hero-image-5 */}
     </section>
   );
@@ -1203,8 +1294,8 @@ const NewServiceCard = ({ title, imageUrl, hoverText }) => {
       <img
         src={imageUrl}
         alt={title}
-        className={`new-service-card-image`} 
-        style={{ filter: isHovered ? 'blur(5px)' : 'blur(0px)', transform: isHovered ? 'scale(1.05)' : 'scale(1)' }} 
+        className={`new-service-card-image`}
+        style={{ filter: isHovered ? 'blur(5px)' : 'blur(0px)', transform: isHovered ? 'scale(1.05)' : 'scale(1)' }}
       />
       <h3 className="new-service-card-title">{title}</h3>
       {isHovered && (
@@ -1277,7 +1368,7 @@ const ServicesSection = () => {
 
 // About Us Section Component
 const AboutUsSection = () => {
-  const aboutUsDescription = "At Nexera, we are passionate about crafting exceptional digital experiences that drive growth and innovation for businesses worldwide. With a dedicated team of over 19 talented UX/UI Designers, Strategists, Developers, and Digital Marketers, we pride ourselves on delivering high-performing software solutions without any outsourcing. Our commitment to quality assurance ensures that every project we undertake adheres to the highest standards and best practices. We believe in getting the details right, keeping our promises, and always going the extra mile to exceed client expectations. From initial concept to post-launch support, we are your trusted partner in navigating the complexities of the digital landscape, guaranteeing your success and fostering long-term relationships built on trust and results. Our expertise spans across web development, mobile app creation, intuitive UI/UX design, strategic digital marketing, robust cloud solutions, and effective SEO optimization. We are constantly evolving, embracing the latest tools and frameworks to ensure your business not only keeps pace with technological advancements but also scales efficiently and effectively in an ever-changing market.";
+  const aboutUsDescription = "NEXERA is a digital powerhouse committed to crafting exceptional digital experiences and driving unparalleled growth for leading brands worldwide. We specialize in developing high-performing software solutions that are not only innovative but also meticulously tailored to meet the unique challenges and aspirations of our diverse clientele. Our dedicated team, comprised of industry veterans and creative trailblazers, is passionate about transforming visionary ideas into tangible digital realities. At NEXERA, we believe in a collaborative approach, working hand-in-hand with our clients to ensure every solution we deliver is a testament to our shared commitment to excellence. Partner with us to navigate the complexities of the digital world and unlock your brand's full potential.";
 
   // Split the text into words
   const words = aboutUsDescription.split(' ');
@@ -1718,7 +1809,7 @@ const CallToActionSection = () => {
   );
 };
 
-// New Animated Cards Section Component
+// Existing Animated Cards Section Component (unchanged)
 const AnimatedCardsSection = () => {
   const cards = [
     { name: "Software Solution", icon: (
@@ -1801,6 +1892,104 @@ const AnimatedCardsSection = () => {
             <span>{card.name}</span>
           </div>
         ))}
+      </div>
+    </section>
+  );
+};
+
+// NEW Product Showcase Section Component
+const ProductShowcaseSection = ({ productImages }) => {
+  const topRowRef = useRef(null);
+  const bottomRowRef = useRef(null);
+  const [topRowWidth, setTopRowWidth] = useState(0);
+  const [bottomRowWidth, setBottomRowWidth] = useState(0);
+
+  useEffect(() => {
+    const calculateRowWidths = () => {
+      // Calculate the total width of all images in a row for the top row
+      if (topRowRef.current) {
+        let currentTopWidth = 0;
+        Array.from(topRowRef.current.children).forEach(child => {
+          // Include margin-right in the calculation
+          currentTopWidth += child.offsetWidth + parseFloat(getComputedStyle(child).marginRight);
+        });
+        // We set the width for one full cycle of the original images
+        setTopRowWidth(currentTopWidth / 2); // Divide by 2 because we duplicate the images in JSX
+      }
+
+      // Calculate the total width of all images in a row for the bottom row
+      if (bottomRowRef.current) {
+        let currentBottomWidth = 0;
+        Array.from(bottomRowRef.current.children).forEach(child => {
+          currentBottomWidth += child.offsetWidth + parseFloat(getComputedStyle(child).marginRight);
+        });
+        setBottomRowWidth(currentBottomWidth / 2); // Divide by 2 because we duplicate the images in JSX
+      }
+    };
+
+    // Calculate initial widths
+    calculateRowWidths();
+
+    // Recalculate widths if window resizes
+    window.addEventListener('resize', calculateRowWidths);
+
+    // Clean up event listener
+    return () => {
+      window.removeEventListener('resize', calculateRowWidths);
+    };
+  }, [productImages]); // Re-run if productImages array changes
+
+  // Duplicate the images array to ensure a seamless loop
+  const duplicatedImages = [...productImages, ...productImages];
+
+  // Calculate animation duration based on content width for a consistent speed
+  // Adjust the divisor (e.g., 50) to control the overall speed. Smaller number = faster.
+  const animationSpeedFactor = 50; // Pixels per second, adjust as needed
+
+  const topAnimationDuration = topRowWidth / animationSpeedFactor;
+  const bottomAnimationDuration = bottomRowWidth / animationSpeedFactor;
+
+
+  return (
+    <section className="product-showcase-section section-padding">
+      <div className="section-header">
+        <h2 className="section-title">
+          OUR <span className="service-color-pink">PORTFOLIO</span>
+        </h2>
+        <p className="section-description">
+          Explore a selection of our innovative projects and solutions.
+        </p>
+      </div>
+      <div className="product-showcase-row-wrapper">
+        <div
+          className="product-showcase-row top-row-animation"
+          ref={topRowRef}
+          style={{
+            '--row-width-top': `${topRowWidth}px`,
+            '--animation-duration-top': `${topAnimationDuration}s`
+          }}
+        >
+          {duplicatedImages.map((image, index) => (
+            <img key={`top-${index}`} src={image} alt={`Portfolio Image ${index + 1}`} className="product-showcase-image" />
+          ))}
+        </div>
+        <div
+          className="product-showcase-row bottom-row-animation"
+          ref={bottomRowRef}
+          style={{
+            '--row-width-bottom': `${bottomRowWidth}px`,
+            '--animation-duration-bottom': `${bottomAnimationDuration}s`
+          }}
+        >
+          {duplicatedImages.map((image, index) => (
+            <img key={`bottom-${index}`} src={image} alt={`Portfolio Image ${index + 1}`} className="product-showcase-image" />
+          ))}
+        </div>
+      </div>
+      <div style={{ textAlign: 'center', marginTop: '2rem' }}>
+        <button className="cta-button">
+          VIEW PORTFOLIO
+        </button>
       </div>
     </section>
   );
