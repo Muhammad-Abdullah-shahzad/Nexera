@@ -919,7 +919,6 @@ function App() {
         }
 
         .portfolio-staggered-card {
-
           border-radius: 0px !important;
           box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
           overflow: hidden; /* Ensures image corners are rounded */
@@ -964,7 +963,7 @@ function App() {
           display: flex;
           flex-direction: column;
           flex-grow: 1; /* Allow content to take available space */
-   \
+   
         }
 
         .portfolio-staggered-card-title {
@@ -1300,6 +1299,157 @@ function App() {
         .main-content.light-theme-active .about-us-description .about-us-word.bright {
           color: var(--color-black); /* Bright text in light mode */
         }
+
+        /* FAQ Section Styles */
+        .faq-section {
+          padding: 4rem 1rem;
+          background-color: var(--color-black);
+        }
+
+        /* New container for FAQ layout */
+        .faq-layout-container {
+          display: block; /* Default to block on small screens */
+          margin: 0 auto; /* Center the container */
+          max-width: 1200px; /* Optional: limit overall width */
+        }
+
+        @media (min-width: 768px) { /* For tablets and larger */
+          .faq-layout-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start; /* Align items to the top */
+            gap: 4rem; /* Space between left and right columns */
+            padding: 0 1rem; /* Add some horizontal padding */
+          }
+        }
+        @media (min-width: 1024px) { /* For laptops and larger */
+          .faq-layout-container {
+            padding: 0 2rem; /* More padding for larger screens */
+          }
+        }
+
+
+        .faq-section .section-header {
+          text-align: center; /* Default center alignment */
+          margin-bottom: 3rem; /* Default margin for stacked layout */
+        }
+
+        @media (min-width: 768px) {
+          .faq-section .section-header {
+            text-align: left; /* Align text to left on larger screens */
+            flex: 1; /* Take up 1 part of the flex space */
+            margin-bottom: 0; /* Remove bottom margin when in flex layout */
+            max-width: 40%; /* Limit width of header on larger screens */
+          }
+        }
+
+        .faq-list {
+          width: 100%; /* Default full width */
+        }
+
+        @media (min-width: 768px) {
+          .faq-list {
+            flex: 2; /* Take up 2 parts of the flex space (e.g., 66%) */
+          }
+        }
+
+
+        .faq-item {
+          background-color: #7f858e00;
+          border-radius: 0rem;
+          margin-bottom: 1rem;
+          overflow: hidden; /* Ensures smooth height transition */
+          transition: background-color 0.3s ease, box-shadow 0.3s ease;
+          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .faq-item:hover {
+          background-color: var(--color-gray-700);
+        }
+
+        .faq-question {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 1.25rem 1.5rem;
+          cursor: pointer;
+          font-size: 1.125rem;
+          font-weight: 600;
+          color: var(--color-white);
+          border: none;
+          background: none;
+          width: 100%;
+          text-align: left;
+        }
+
+        .faq-question-icon {
+          transition: transform 0.3s ease;
+          color: var(--color-gray-400);
+        }
+
+        .faq-question-icon.expanded {
+          transform: rotate(180deg);
+        }
+
+        .faq-answer {
+          max-height: 0;
+          overflow: hidden;
+          transition: max-height 0.5s ease-in-out, padding 0.5s ease-in-out;
+          color: var(--color-gray-300);
+          font-size: 1rem;
+          padding: 0 1.5rem; /* No vertical padding when collapsed */
+          line-height: 1.6;
+        }
+
+        .faq-answer.expanded {
+          max-height: 200px; /* Adjust as needed for content length */
+          padding: 0.5rem 1.5rem 1.25rem; /* Vertical padding when expanded */
+        }
+
+        /* Light mode adjustments for FAQ */
+        .main-content.light-theme-active .faq-item {
+          background-color: var(--color-white);
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .main-content.light-theme-active .faq-item:hover {
+          background-color: var(--color-gray-100);
+        }
+
+        .main-content.light-theme-active .faq-question {
+          color: var(--color-gray-900);
+        }
+
+        .main-content.light-theme-active .faq-question-icon {
+          color: var(--color-gray-600);
+        }
+
+        .main-content.light-theme-active .faq-answer {
+          color: var(--color-gray-700);
+        }
+
+        /* Animation for fade-in and slide-up */
+        @keyframes fadeInSlideUp {
+          from {
+            opacity: 0;
+            transform: translateY(20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        .fade-in-slide-up {
+          opacity: 0;
+          transform: translateY(20px);
+          transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+
+        .fade-in-slide-up.is-visible {
+          opacity: 1;
+          transform: translateY(0);
+        }
         `}
       </style>
 
@@ -1334,6 +1484,9 @@ function App() {
 
         {/* Product Showcase Section (Animated Images - kept for other use) */}
         <ProductShowcaseSection productImages={productImages} />
+
+        {/* FAQ Section - NEW */}
+        <FAQSection />
 
         {/* Contact Us Section */}
         <ContactUsSection />
@@ -2158,6 +2311,108 @@ const PortfolioSection = ({ portfolioItems }) => {
         <button className="cta-button">
           VIEW FULL PORTFOLIO
         </button>
+      </div>
+    </section>
+  );
+};
+
+// FAQ Section Component
+const FAQSection = () => {
+  const [openIndex, setOpenIndex] = useState(null); // State to manage which FAQ item is open
+  const sectionHeaderRef = useRef(null);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.unobserve(entry.target); // Stop observing once visible
+        }
+      },
+      {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.1, // Trigger when 10% of the section is visible
+      }
+    );
+
+    if (sectionHeaderRef.current) {
+      observer.observe(sectionHeaderRef.current);
+    }
+
+    return () => {
+      if (sectionHeaderRef.current) {
+        observer.unobserve(sectionHeaderRef.current);
+      }
+    };
+  }, []);
+
+  const faqs = [
+    {
+      question: "What industries do you serve?",
+      answer: "We serve a diverse range of industries including tech, healthcare, finance, e-commerce, education, and more. Our adaptable approach allows us to tailor solutions to unique industry needs."
+    },
+    {
+      question: "How do you manage projects?",
+      answer: "We utilize agile methodologies, including Scrum and Kanban, to ensure flexibility, transparency, and efficient delivery. Our project management tools keep clients updated every step of the way."
+    },
+    {
+      question: "What technologies do you specialize in?",
+      answer: "Our expertise spans modern web frameworks like React, Angular, and Vue.js; backend technologies such as Node.js, Python, and Ruby on Rails; various databases including MongoDB and SQL; and cloud platforms like AWS and Azure."
+    },
+    {
+      question: "How do you ensure quality?",
+      answer: "Quality is paramount. We implement rigorous testing procedures, including unit, integration, and user acceptance testing. Our dedicated QA team works closely with developers to maintain high standards throughout the development lifecycle."
+    },
+    {
+      question: "What services do you offer?",
+      answer: "We offer a comprehensive suite of services including web development, mobile app development, UI/UX design, digital marketing, cloud solutions, and SEO optimization."
+    },
+    {
+      question: "What scale of projects do you work on?",
+      answer: "We handle projects of all scales, from small business websites and startups to large-scale enterprise applications. Our team is equipped to manage complex requirements and deliver scalable solutions."
+    }
+  ];
+
+  const toggleFAQ = (index) => {
+    setOpenIndex(openIndex === index ? null : index);
+  };
+
+  return (
+    <section className="faq-section section-padding">
+      <div className="faq-layout-container"> {/* New wrapper for layout */}
+        <div className={`section-header fade-in-slide-up ${isVisible ? 'is-visible' : ''}`} ref={sectionHeaderRef}>
+          <h2 className="section-title">
+            FREQUENTLY ASKED <span className="service-color-pink">QUESTIONS</span>
+          </h2>
+          <p className="section-description">
+            Find answers to common questions about our services, processes, and expertise.
+          </p>
+        </div>
+        <div className="faq-list">
+          {faqs.map((faq, index) => (
+            <div key={index} className="faq-item">
+              <button className="faq-question" onClick={() => toggleFAQ(index)}>
+                {faq.question}
+                <svg
+                  className={`faq-question-icon ${openIndex === index ? 'expanded' : ''}`}
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path>
+                </svg>
+              </button>
+              <div className={`faq-answer ${openIndex === index ? 'expanded' : ''}`}>
+                <p>{faq.answer}</p>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   );
