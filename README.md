@@ -33,15 +33,38 @@
 |------------|--------------------|
 | Frontend   | React.js, HTML5, CSS3 |
 | Styling    | CSS Modules / Styled Components / SCSS *(whichever you used)* |
-| Animations | AOS, Framer Motion *(if used)* |
+| Animations | Framer Motion ** |
 | Backend    | Node.js, Express.js |
-| Deployment | Netlify (Frontend), Render/Heroku/Fly.io *(optional if backend deployed)* |
+| Deployment | Netlify (Frontend), Render/Heroku/Fly.io ** |
 
 ---
 
 ## 📂 Folder Structure (Simplified)
 
-nexeraagency/ ├── client/                  # React frontend │   ├── public/ │   └── src/ │       ├── components/      # Reusable UI components │       ├── pages/           # Page sections (Home, About, Services, etc.) │       ├── App.js │       └── index.js │ ├── server/                  # Node/Express backend │   ├── routes/ │   ├── controllers/ │   ├── app.js / index.js │   └── package.json └── README.md
+nexeraagency/
+ ├── client/                  # React frontend │  
+ ├── public/ 
+ │   
+ └── src/
+ │       
+ ├── components/      # Reusable UI components 
+ │      
+ ├── pages/           # Page sections (Home, About, Services, etc.) │     
+  ├── App.js 
+  │      
+  └── index.js 
+  │ 
+  ├── server/                 
+ # Node/Express backend 
+│   
+├── routes/ 
+│   
+├── controllers/ 
+│ 
+├── app.js / index.js 
+│   
+└── package.json 
+└── README.md
 
 ---
 
