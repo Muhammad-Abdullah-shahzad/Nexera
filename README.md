@@ -42,14 +42,19 @@
 ## 📂 Folder Structure (Simplified)
 
 nexeraagency/
- ├── client/                  # React frontend │  
+ ├── client/                
+  # React frontend
+ │  
  ├── public/ 
  │   
  └── src/
  │       
- ├── components/      # Reusable UI components 
+ ├── components/    
+  # Reusable UI  components 
  │      
- ├── pages/           # Page sections (Home, About, Services, etc.) │     
+ ├── pages/          
+ # Page sections (Home, About, Services, etc.) 
+  │     
   ├── App.js 
   │      
   └── index.js 
