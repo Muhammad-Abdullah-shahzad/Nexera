@@ -1,70 +1,118 @@
-# Getting Started with Create React App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+# 🚀 NexeraAgency
 
-In the project directory, you can run:
+**NexeraAgency** is a modern, responsive, and visually stunning digital agency website built using **React.js** for the frontend and **Node.js/Express.js** for backend functionality. It showcases clean UI/UX design principles, smooth animations, and API connectivity — all deployed and live at:
 
-### `npm start`
+🔗 **Live Site:** [nexera.netlify.app](https://nexera.netlify.app)
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+---
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## 📸 Preview
 
-### `npm test`
+> *(screenshots will be added soon)*
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+---
 
-### `npm run build`
+## ✨ Features
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+| Category       | Feature Description                                                       |
+|----------------|----------------------------------------------------------------------------|
+| 💻 Frontend     | Built with React.js, featuring component-based architecture               |
+| 🎨 UI/UX        | Sleek design with stunning visuals, animations, and transitions           |
+| 📱 Responsive   | Mobile-first design; optimized for all screen sizes                       |
+| 📡 Backend API  | Node.js + Express.js backend to handle requests (e.g., contact forms)     |
+| 📨 Contact Form | Connected to backend with API POST request (demo/real email logic)         |
+| 🌐 Deployment   | Hosted on Netlify with blazing fast load speeds                           |
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+---
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## 🛠️ Tech Stack
 
-### `npm run eject`
+| Layer      | Technology         |
+|------------|--------------------|
+| Frontend   | React.js, HTML5, CSS3 |
+| Styling    | CSS Modules / Styled Components / SCSS *(whichever you used)* |
+| Animations | AOS, Framer Motion *(if used)* |
+| Backend    | Node.js, Express.js |
+| Deployment | Netlify (Frontend), Render/Heroku/Fly.io *(optional if backend deployed)* |
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+---
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## 📂 Folder Structure (Simplified)
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+nexeraagency/ ├── client/                  # React frontend │   ├── public/ │   └── src/ │       ├── components/      # Reusable UI components │       ├── pages/           # Page sections (Home, About, Services, etc.) │       ├── App.js │       └── index.js │ ├── server/                  # Node/Express backend │   ├── routes/ │   ├── controllers/ │   ├── app.js / index.js │   └── package.json └── README.md
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+---
 
-## Learn More
+## 🚀 Getting Started
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### 🧾 Prerequisites
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+- Node.js and npm installed
+- Basic understanding of React and Express
 
-### Code Splitting
+### 🔧 Installation
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+1. **Clone the repository:**
 
-### Analyzing the Bundle Size
+   ```bash
+   git clone https://github.com/yourusername/nexeraagency.git
+   cd nexeraagency
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+2. Install frontend dependencies:
 
-### Making a Progressive Web App
+cd client
+npm install
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
 
-### Advanced Configuration
+3. Install backend dependencies:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+cd ../server
+npm install
 
-### Deployment
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+4. Run the app locally:
 
-### `npm run build` fails to minify
+Run backend:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+npm start
+
+Run frontend (in a separate terminal):
+
+cd client
+npm start
+
+
+
+
+
+---
+
+🌐 Deployment
+
+Frontend: Deployed on Netlify
+
+Live URL: https://nexera.netlify.app
+
+Backend: Deployed on fly.io
+
+
+
+---
+
+📬 Contact
+
+Muhammad Abdullah
+📧 Email: shahzadabdullah814@gmail.com
+
+
+---
+
+📃 License
+
+This project is open-source and available for academic or portfolio use.
+
+
+
+
